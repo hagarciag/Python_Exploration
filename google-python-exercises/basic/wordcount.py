@@ -47,11 +47,36 @@ import sys
 
 ###
 
+def word_dictionary(filename):
+  word_dictionary={}
+  f = open(filename, 'r')
+  for line in f:   ## iterates over the lines of the file
+    line=line.lower()
+    words = line.split()
+    for word in words:
+      #print (word.lower())
+      value=word_dictionary.get(word,0)+1
+      word_dictionary[word]=value
+      #print (word_dictionary.get(word,0)+1)
+  f.close()
+  return word_dictionary
+
+def print_words(filename):
+  word_dict=word_dictionary(filename)
+  for key in sorted(word_dict.keys()):
+    print (key+' '+str(word_dict[key]) )
+
+def print_top(filename):
+  word_dict=word_dictionary(filename)
+  sorted_x = sorted(word_dict.items(), key=lambda kv: kv[1],reverse=True)
+  for key_value in sorted_x[:20]:
+    print (key_value[0]+' '+str(key_value[1]) )
+
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
 def main():
   if len(sys.argv) != 3:
-    print 'usage: ./wordcount.py {--count | --topcount} file'
+    print ('usage: ./wordcount.py {--count | --topcount} file')
     sys.exit(1)
 
   option = sys.argv[1]
@@ -61,7 +86,7 @@ def main():
   elif option == '--topcount':
     print_top(filename)
   else:
-    print 'unknown option: ' + option
+    print ('unknown option: ' + option)
     sys.exit(1)
 
 if __name__ == '__main__':

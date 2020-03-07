@@ -40,8 +40,22 @@ def extract_names(filename):
   followed by the name-rank strings in alphabetical order.
   ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
   """
-  # +++your code here+++
-  return
+  # Open file
+  f = open(filename, 'r')
+  f2 = open(filename, 'r')
+  # Feed the file text into findall(); it returns a list of all the found strings
+  names={}
+  solution=[]
+  details = re.findall(r'\<td\>(\d+)\<\/td\>\<td\>([a-zA-Z]+)\<\/td\>\<td\>([a-zA-Z]+)\<', f.read())
+  annio = re.findall(r'\"\>Popularity in (\d{4})\<\/h3\>', f2.read())
+  solution.append(annio[0])
+  for record in details:
+    names[record[1]]=record[0]
+    names[record[2]]=record[0]
+  for name in sorted(names.keys()):
+    name_rank=name+' '+str(names[name])
+    solution.append(name_rank)
+  return solution
 
 
 def main():
@@ -51,7 +65,7 @@ def main():
   args = sys.argv[1:]
 
   if not args:
-    print 'usage: [--summaryfile] file [file ...]'
+    print ('usage: [--summaryfile] file [file ...]')
     sys.exit(1)
 
   # Notice the summary flag and remove it from args if it is present.
@@ -63,6 +77,13 @@ def main():
   # +++your code here+++
   # For each filename, get the names, then either print the text output
   # or write it to a summary file
-  
+  for file in args:
+    names=extract_names(file)
+    if summary:
+      #write file
+      continue
+    else:
+      print(names)
+    
 if __name__ == '__main__':
   main()
